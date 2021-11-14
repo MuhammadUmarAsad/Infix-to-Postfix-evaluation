@@ -203,7 +203,7 @@ class InfixToPostfix
     //variables to use in Infix to postfix conversation
     StackChar operatorStack;
     string postFixTerm = "", temp = "";
-    char temp_char = ' ', temp_char_1 = ' ';
+    char top_char = ' ', temp_char_1 = ' ';
 
     //public functions
 public:
@@ -228,10 +228,10 @@ public:
                 temp = "";
 
                 //getting the top character of the stack and using it
-                operatorStack.peak(&temp_char);
+                operatorStack.peak(&top_char);
                 //if string character is a operator and its precedence is correct
                 //push it into the stack
-                if (temp_char == ' ' || correctPrecedence(temp_char, infixExpression[i]))
+                if (correctPrecedence(top_char, infixExpression[i]))
                 {
                     operatorStack.Push(infixExpression[i]);
                 }
@@ -257,24 +257,23 @@ public:
                 {
                     //when the operator precdence is such that operator of
                     //equal precedence is in input expression and stack top
-                    if (!correctPrecedence(temp_char, infixExpression[i]) || infixExpression[i] == temp_char)
+                    if (!correctPrecedence(top_char, infixExpression[i]) || infixExpression[i] == top_char)
                     {
                         postFixTerm += operatorStack.Pop();
                         postFixTerm += ' ';
-                        operatorStack.Push(infixExpression[i]);
                     }
 
                     //when the operator precdence is such that operator of
                     //greater precedence is in input expression and stack top
-                    if (!correctPrecedence(temp_char, infixExpression[i]))
+                    if (!correctPrecedence(top_char, infixExpression[i]))
                     {
                         //while the correct precedence doesnot come it pops the elements form the stack
                         // and pushes them in the string output
-                        while (!operatorStack.isEmpty() && !correctPrecedence(temp_char, infixExpression[i]))
+                        while (!operatorStack.isEmpty() && !correctPrecedence(top_char, infixExpression[i]))
                         {
                             postFixTerm += operatorStack.Pop();
                             postFixTerm += ' ';
-                            operatorStack.peak(&temp_char);
+                            operatorStack.peak(&top_char);
                         }
                         operatorStack.Push(infixExpression[i]);
                     }
